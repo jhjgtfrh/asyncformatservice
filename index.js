@@ -1,19 +1,14 @@
-function deserialize(data) {
-  if (!data.length) return null;
-  const root = new TreeNode(data.shift());
-  const queue = [root];
-  while (queue.length) {
-    const node = queue.shift();
-    const leftVal = data.shift();
-    if (leftVal !== undefined) {
-      node.left = new TreeNode(leftVal);
-      queue.push(node.left);
+function rob(nums) {
+  if (nums.length === 1) return nums[0];
+  const robRange = (start, end) => {
+    let prevMax = 0;
+    let currMax = 0;
+    for (let i = start; i <= end; i++) {
+      const temp = currMax;
+      currMax = Math.max(currMax, prevMax + nums[i]);
+      prevMax = temp;
     }
-    const rightVal = data.shift();
-    if (rightVal !== undefined) {
-      node.right = new TreeNode(rightVal);
-      queue.push(node.right);
-    }
-  }
-  return root;
+    return currMax;
+  };
+  return Math.max(robRange(0, nums.length - 2), robRange(1, nums.length - 1));
 }
